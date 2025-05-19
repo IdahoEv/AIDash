@@ -13,38 +13,42 @@ A modern research dashboard for categorizing and recommending scientific papers.
 - Frontend: ReactJS
 - ML: TensorFlow
 - Database: SQLite (for development)
+- Package Management: Poetry
 
 ## Setup Instructions
 
 ### Backend Setup
-1. Create a virtual environment:
-```bash
-# python -m venv venv
-# source venv/bin/activate  # On Windows: .\venv\Scripts\activate
-```
+1. Install Poetry (if not already installed):
+   ```bash
+   # Windows (PowerShell)
+   (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
+   
+   # macOS / Linux
+   curl -sSL https://install.python-poetry.org | python3 -
+   ```
 
 2. Install dependencies:
-```bash
-poetry install
-```
+   ```bash
+   poetry install
+   ```
 
 3. Run the backend server:
-```bash
-cd backend
-uvicorn main:app --reload
-```
+   ```bash
+   cd backend
+   poetry run uvicorn main:app --reload
+   ```
 
 ### Frontend Setup
 1. Install dependencies:
-```bash
-cd frontend
-npm install
-```
+   ```bash
+   cd frontend
+   npm install
+   ```
 
 2. Run the development server:
-```bash
-npm start
-```
+   ```bash
+   npm start
+   ```
 
 ## Project Structure
 ```
@@ -55,7 +59,7 @@ npm start
 │   │   ├── routers/
 │   │   └── ml/
 │   ├── main.py
-│   └── requirements.txt
+│   └── pyproject.toml
 └── frontend/
     ├── src/
     │   ├── components/
