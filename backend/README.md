@@ -10,16 +10,22 @@ This is the backend service for the Research Dashboard project, built with FastA
 - User authentication and authorization
 - Paper metadata extraction and processing
 - Search functionality with filters
+- PostgreSQL database integration
 
 ## Tech Stack
 
 - FastAPI - Modern, fast web framework for building APIs
 - TensorFlow - Machine learning framework for paper categorization
 - SQLAlchemy - SQL toolkit and ORM
+- Alembic - Database migration tool
+- PostgreSQL - Production database
+- SQLite - Development database
 - Pydantic - Data validation and settings management
 - PyJWT - JWT token handling for authentication
 - pytest - Testing framework
 - Poetry - Dependency management and packaging
+- psycopg2-binary - PostgreSQL adapter
+- asyncpg - Async PostgreSQL driver
 
 ## Project Structure
 
@@ -57,13 +63,37 @@ backend/
 3. Set up environment variables:
    Create a `.env` file in the root directory with the following variables:
    ```
+   # Database Configuration
    DATABASE_URL=postgresql://user:password@localhost:5432/research_dashboard
+   DATABASE_TEST_URL=postgresql://user:password@localhost:5432/research_dashboard_test
+   
+   # For development, you can use SQLite instead:
+   # DATABASE_URL=sqlite:///./research_dashboard.db
+   
+   # Security
    SECRET_KEY=your-secret-key
    ALGORITHM=HS256
    ACCESS_TOKEN_EXPIRE_MINUTES=30
    ```
 
-4. Initialize the database:
+4. Database Setup:
+   
+   a. Install PostgreSQL (if not already installed):
+   - Windows: Download from https://www.postgresql.org/download/windows/
+   - macOS: `brew install postgresql`
+   - Linux: `sudo apt-get install postgresql`
+
+   b. Create the database:
+   ```bash
+   # Connect to PostgreSQL
+   psql -U postgres
+   
+   # Create database
+   CREATE DATABASE research_dashboard;
+   CREATE DATABASE research_dashboard_test;
+   ```
+
+   c. Initialize the database:
    ```bash
    poetry run alembic upgrade head
    ```
@@ -115,6 +145,12 @@ poetry run alembic revision --autogenerate -m "description"
 To apply migrations:
 ```bash
 poetry run alembic upgrade head
+```
+
+To rollback migrations:
+```bash
+poetry run alembic downgrade -1  # Roll back one migration
+poetry run alembic downgrade base  # Roll back all migrations
 ```
 
 ## Contributing
